@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_10_134857) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_10_141650) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "boolean_data_points", force: :cascade do |t|
+    t.boolean "value"
+    t.string "name"
+    t.integer "sleep_quality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "integer_data_points", force: :cascade do |t|
+    t.integer "value"
+    t.string "name"
+    t.integer "sleep_quality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "sleep_qualities", force: :cascade do |t|
     t.date "date"
@@ -22,4 +38,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_10_134857) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "time_data_points", force: :cascade do |t|
+    t.datetime "value"
+    t.string "name"
+    t.integer "sleep_quality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "boolean_data_points", "sleep_qualities"
 end
