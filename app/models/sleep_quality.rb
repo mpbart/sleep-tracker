@@ -1,0 +1,2 @@
+class SleepQuality < ApplicationRecord
+end
