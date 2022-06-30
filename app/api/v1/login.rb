@@ -1,15 +1,22 @@
+require 'authenticate/user'
+
 module V1
   class Login < Grape::API
     namespace :login do
       params do
-        requires :user_id, type: Integer
+        requires :username, type: String
         requires :pin, type: Integer
       end
 
       post do
-        Rails.logger.info "SOMETHING"
-        Rails.logger.info(params.to_h)
-        {user_id: params[:user_id], pin: params[:pin]}
+        result = Authenticate::User.auth_user(username: params[:username], pin: params[:pin])
+        if result[:error]
+          status 401
+          {error: result[:error]}
+        else
+          status 200
+          {access_token: result[:access_token]}
+        end
       end
     end
   end
