@@ -27,6 +27,9 @@ gem "stimulus-rails"
 # Use grape for REST API endpoints
 gem "grape"
 
+# Use JWTs as access tokens
+gem "jwt"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
