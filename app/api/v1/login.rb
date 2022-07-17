@@ -9,7 +9,7 @@ module V1
       end
 
       post do
-        result = Authenticate::User.auth_user(username: params[:username], pin: params[:pin])
+        result = Authenticate::User.login_user(username: params[:username], pin: params[:pin])
         if result[:error]
           status 401
           {error: result[:error]}
