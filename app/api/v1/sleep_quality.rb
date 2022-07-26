@@ -16,7 +16,7 @@ module V1
         requires :date, type: Date
         requires :sleep_rating, type: Integer
         requires :sleep_duration, type: Float
-        optional :boolean_data_points, type: Array do
+        optional :boolean_data_points, type: Array[JSON] do
           requires :value
           requires :name
         end
