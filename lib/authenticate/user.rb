@@ -18,13 +18,12 @@ module Authenticate
     def self.authenticate_from_token(token)
       begin
         decoded_token = JWT.decode(token, signing_key, true)
-        user = ::Entity::User.find_by(username: decoded_token[:sub])
+        user = ::Entity::User.find_by(username: decoded_token.first['sub'])
         {current_user: user.build}
       rescue JWT::ExpiredSignature
         {error: "Expired Token"}
       rescue => e
-        Rails.logger.error(e)
-        {error: "Unexpected Error"}
+        {error: "Unexpected Error: #{e.inspect}"}
       end
     end
 

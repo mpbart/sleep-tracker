@@ -7,10 +7,13 @@ module V1
 
     helpers do
       def authenticate_user!
-        current_user = Authenticate::User.authenticate_from_token(headers['x-user-token'])
-        status 401 unless current_user
+        result = Authenticate::User.authenticate_from_token(headers['X-User-Token'])
+        unless result[:current_user]
+          Rails.logger.error(result[:error])
+          error! 'Unauthorized', 401
+        end
 
-        @interface = SleepTracking::Interface.new(current_user)
+        @interface = SleepTracking::Interface.new(result[:current_user])
       end
     end
 
