@@ -4,6 +4,7 @@ module Entity
   class User < Entity::Base
     def build
       {
+        id: @obj.id,
         username: @obj.username,
         first_name: @obj.first_name,
         last_name: @obj.last_name,

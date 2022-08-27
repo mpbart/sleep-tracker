@@ -12,7 +12,7 @@ module SleepTracking
     end
 
     def record_sleep(params)
-      Entity::SleepQuality.from_hash(params.merge({user_id: user[:id]}).persist!
+      Entity::SleepQuality.from_hash(params.merge({user_id: user[:id]})).persist!
     end
 
     def retrieve_sleep_data_for_single_date(date)
@@ -20,7 +20,7 @@ module SleepTracking
     end
 
     def retrieve_sleep_data_for_date_range(start_date, end_date)
-      Repository::SleepQuality.where(date: start_date..end_date, user_id: user[:id]).map{ |s| s.build }
+      Repository::SleepQuality.where(date: start_date..end_date, user_id: user[:id])
     end
   end
 end
