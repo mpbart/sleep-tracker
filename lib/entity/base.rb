@@ -15,6 +15,14 @@ module Entity
       @built_obj[key]
     end
 
+    def []=(key, value)
+      @built_obj[key] = value
+    end
+
+    def set_association(association_pkey, value)
+      @obj.send("#{association_pkey}=", value)
+    end
+
     def self.find_by(**attributes)
       begin
         new(activerecord_class.find_by!(**attributes))

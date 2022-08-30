@@ -18,24 +18,36 @@ module Entity
       }
     end
 
-    # TODO: Figure out how to persist sleep qualities with associations to both a user
-    # and all data points
     def persist!
       record = @obj.save!
       persist_associations
     end
 
     def persist_associations
-      @built_obj[:boolean_data_points].each{ |bdp| @obj.boolean_data_points << Entity::BooleanDataPoint.from_hash(bdp) }
-      @built_obj[:integer_data_points].each{ |idp| @obj.integer_data_points << Entity::IntegerDataPoint.from_hash(idp) }
-      @built_obj[:time_data_points].each{ |tdp| @obj.time_data_points << Entity::TimeDataPoint.from_hash(tdp) }
+      @built_obj[:boolean_data_points].each do |bdp|
+        bdp.set_association(Entity::BooleanDataPoint.sleep_quality_pkey, @obj.id)
+        bdp.persist!
+      end
+      @built_obj[:integer_data_points].each do |idp|
+        idp.set_association(Entity::IntegerDataPoint.sleep_quality_pkey, @obj.id)
+        idp.persist!
+      end
+      @built_obj[:time_data_points].each do |tdp|
+        tdp.set_association(Entity::TimeDataPoint.sleep_quality_pkey, @obj.id)
+        tdp.persist!
+      end
     end
 
-    # TODO: This still doesn't work correctly to build the entity from a hash with associated data
-    # As-is all associations are blank because #build is looking for those on a new instance of
-    # the model instead of from the passed in hash data
     def self.from_hash(hash)
-      new(activerecord_class.new(hash.slice(*MODEL_ATTRIBUTES)))
+      instance = new(activerecord_class.new(hash.slice(*MODEL_ATTRIBUTES)))
+      instance[:boolean_data_points].concat(data_points_to_array(hash[:boolean_data_points], Entity::BooleanDataPoint))
+      instance[:integer_data_points].concat(data_points_to_array(hash[:integer_data_points], Entity::IntegerDataPoint))
+      instance[:time_data_points].concat(data_points_to_array(hash[:time_data_points], Entity::TimeDataPoint))
+      instance
+    end
+
+    def self.data_points_to_array(data_points, entity_klass)
+      data_points&.map{ |dp| entity_klass.from_hash(dp) } || []
     end
 
     def self.activerecord_class
