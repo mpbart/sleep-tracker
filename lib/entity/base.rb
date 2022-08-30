@@ -23,10 +23,6 @@ module Entity
       end
     end
 
-    def self.where(parameters)
-      activerecord_class.where(**parameters).map{ |record| new(record) }
-    end
-
     # Should only be called directly by the repository
     def self.from_database_record(record)
       new(record)
