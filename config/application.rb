@@ -30,5 +30,6 @@ module Code
     #
     # config.time_zone = "Central Time (US & Canada)"
     config.eager_load_paths << Rails.root.join("app")
+    config.eager_load_paths << Rails.root.join("lib")
   end
 end
