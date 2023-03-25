@@ -17,6 +17,7 @@ module V1
       end
     end
 
+    mount ::V1::RegisterUser
     mount ::V1::Login
     mount ::V1::SleepQuality
   end
